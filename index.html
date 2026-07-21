@@ -1,13 +1,709 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nmc</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NMC AI-Powered Client & Project Life Cycle Management System - Premium Opportunity Management System.">
+  <title>NMC Client & Project Life Cycle Management System</title>
+  
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Animated Background Glows -->
+  <div class="bg-glow bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-2" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-3" aria-hidden="true"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- ======================================================
+       1. AUTHENTICATION VIEW (LOGIN & SIGNUP PORTAL)
+       ====================================================== -->
+  <div id="auth-view" class="view-container">
+    <main class="main-container">
+      <div class="glass-card" id="auth-card">
+        
+        <!-- Logo and Header -->
+        <div class="card-header">
+          <div class="logo">
+            <i class="fa-solid fa-cube logo-icon"></i>
+            <span class="logo-text">Opportunity Portal</span>
+          </div>
+        </div>
+
+        <!-- Active Content Container -->
+        <div class="form-container">
+          
+          <!-- LANDING PANEL -->
+          <section id="landing-panel" class="auth-panel active" aria-labelledby="landing-title">
+            <div class="panel-header">
+              <h1 id="landing-title" class="welcome-heading">Opportunity Management System</h1>
+              <p class="subtitle">Please login or create an account to continue.</p>
+            </div>
+            
+            <div class="landing-actions">
+              <button type="button" id="goto-login-btn" class="btn btn-primary btn-ripple">
+                <span class="btn-text">Login</span>
+              </button>
+              <button type="button" id="goto-signup-btn" class="btn btn-secondary btn-ripple">
+                <span class="btn-text">Sign Up</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- LOGIN PANEL -->
+          <section id="login-panel" class="auth-panel hidden" aria-labelledby="login-title">
+            <div class="panel-header">
+              <h2 id="login-title" class="welcome-heading">Welcome Back</h2>
+            </div>
+            
+            <form id="login-form" novalidate>
+              <!-- Username/Email Field -->
+              <div class="input-group">
+                <label for="login-username" class="input-label">Username or Email</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-user input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="text" 
+                    id="login-username" 
+                    name="username" 
+                    class="form-input" 
+                    placeholder="Username or Email"
+                    required
+                    aria-required="true"
+                  >
+                </div>
+                <span class="error-message" id="login-username-error" role="alert"></span>
+              </div>
+
+              <!-- Password Field -->
+              <div class="input-group">
+                <label for="login-password" class="input-label">Password</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="password" 
+                    id="login-password" 
+                    name="password" 
+                    class="form-input" 
+                    placeholder="Password"
+                    required
+                    aria-required="true"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    aria-label="Toggle password visibility" 
+                    data-target="login-password"
+                  >
+                    <i class="fa-solid fa-eye-slash toggle-icon"></i>
+                  </button>
+                </div>
+                <span class="error-message" id="login-password-error" role="alert"></span>
+              </div>
+
+              <!-- Remember Me & Forgot Password Row -->
+              <div class="form-options">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="login-remember" name="remember">
+                  <span class="checkbox-checkmark"></span>
+                  <span class="checkbox-text">Remember Me</span>
+                </label>
+                <a href="#" id="goto-forgot-btn" class="form-link">Forgot Password?</a>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-ripple">
+                <span class="btn-text">Login</span>
+                <span class="btn-spinner hidden"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+
+              <!-- Bottom Redirect -->
+              <div class="panel-footer">
+                <p>Don't have an account? <a href="#" id="login-to-signup" class="form-link highlight">Sign Up</a></p>
+              </div>
+            </form>
+          </section>
+
+          <!-- SIGNUP PANEL -->
+          <section id="signup-panel" class="auth-panel hidden" aria-labelledby="signup-title">
+            <div class="panel-header">
+              <h2 id="signup-title" class="welcome-heading">Create Account</h2>
+            </div>
+
+            <form id="signup-form" novalidate>
+              <!-- Full Name Field -->
+              <div class="input-group">
+                <label for="signup-fullname" class="input-label">Full Name</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-user input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="text" 
+                    id="signup-fullname" 
+                    name="fullname" 
+                    class="form-input" 
+                    placeholder="Full Name"
+                    required
+                    aria-required="true"
+                  >
+                </div>
+                <span class="error-message" id="signup-fullname-error" role="alert"></span>
+              </div>
+
+              <!-- Username Field -->
+              <div class="input-group">
+                <label for="signup-username" class="input-label">Username</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-at input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="text" 
+                    id="signup-username" 
+                    name="username" 
+                    class="form-input" 
+                    placeholder="username"
+                    required
+                    aria-required="true"
+                  >
+                </div>
+                <span class="error-message" id="signup-username-error" role="alert"></span>
+              </div>
+
+              <!-- Email Field -->
+              <div class="input-group">
+                <label for="signup-email" class="input-label">Email</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="email" 
+                    id="signup-email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="Email Address"
+                    required
+                    aria-required="true"
+                  >
+                </div>
+                <span class="error-message" id="signup-email-error" role="alert"></span>
+              </div>
+
+              <!-- Password Field -->
+              <div class="input-group">
+                <label for="signup-password" class="input-label">Password</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="password" 
+                    id="signup-password" 
+                    name="password" 
+                    class="form-input" 
+                    placeholder="Password"
+                    required
+                    aria-required="true"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    aria-label="Toggle password visibility" 
+                    data-target="signup-password"
+                  >
+                    <i class="fa-solid fa-eye-slash toggle-icon"></i>
+                  </button>
+                </div>
+                <span class="error-message" id="signup-password-error" role="alert"></span>
+              </div>
+
+              <!-- Confirm Password Field -->
+              <div class="input-group">
+                <label for="signup-confirm-password" class="input-label">Confirm Password</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="password" 
+                    id="signup-confirm-password" 
+                    name="confirm-password" 
+                    class="form-input" 
+                    placeholder="Confirm Password"
+                    required
+                    aria-required="true"
+                  >
+                  <button 
+                    type="button" 
+                    class="password-toggle-btn" 
+                    aria-label="Toggle password visibility" 
+                    data-target="signup-confirm-password"
+                  >
+                    <i class="fa-solid fa-eye-slash toggle-icon"></i>
+                  </button>
+                </div>
+                <span class="error-message" id="signup-confirm-password-error" role="alert"></span>
+              </div>
+
+              <!-- Terms and Conditions Checkbox -->
+              <div class="input-group checkbox-group">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="signup-terms" name="terms" required aria-required="true">
+                  <span class="checkbox-checkmark"></span>
+                  <span class="checkbox-text">I agree to the <a href="#" class="inline-link">Terms & Conditions</a></span>
+                </label>
+                <span class="error-message" id="signup-terms-error" role="alert"></span>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-ripple">
+                <span class="btn-text">Create Account</span>
+                <span class="btn-spinner hidden"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+
+              <!-- Bottom Redirect -->
+              <div class="panel-footer">
+                <p>Already have an account? <a href="#" id="signup-to-login" class="form-link highlight">Login</a></p>
+              </div>
+            </form>
+          </section>
+
+          <!-- FORGOT PASSWORD PANEL -->
+          <section id="forgot-panel" class="auth-panel hidden" aria-labelledby="forgot-title">
+            <div class="panel-header">
+              <h2 id="forgot-title" class="welcome-heading">Forgot Password</h2>
+              <p class="subtitle">Enter your email and we'll send a link to reset your password.</p>
+            </div>
+
+            <form id="forgot-form" novalidate>
+              <!-- Email Field -->
+              <div class="input-group">
+                <label for="forgot-email" class="input-label">Email Address</label>
+                <div class="input-wrapper">
+                  <i class="fa-solid fa-envelope input-icon" aria-hidden="true"></i>
+                  <input 
+                    type="email" 
+                    id="forgot-email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="Email Address"
+                    required
+                    aria-required="true"
+                  >
+                </div>
+                <span class="error-message" id="forgot-email-error" role="alert"></span>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="forgot-submit-btn" class="btn btn-primary btn-block btn-ripple">
+                <span class="btn-text">Send Reset Link</span>
+                <span class="btn-spinner hidden"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              </button>
+
+              <!-- Bottom Redirect -->
+              <div class="panel-footer">
+                <a href="#" id="forgot-to-login" class="form-link highlight"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+              </div>
+            </form>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+  <!-- ======================================================
+       2. DASHBOARD VIEW (AFTER SUCCESSFUL LOGIN)
+       ====================================================== -->
+  <div id="dashboard-view" class="view-container hidden">
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+      <div class="nav-left">
+        <button type="button" id="sidebar-toggle-btn" class="sidebar-toggle" aria-label="Toggle Sidebar">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="logo">
+          <i class="fa-solid fa-cube logo-icon"></i>
+          <span class="logo-text">NMC</span>
+        </div>
+      </div>
+      
+      <div class="nav-center">
+        <h1 class="dashboard-title">NMC AI-Powered Client & Project Life Cycle Management System</h1>
+      </div>
+      
+      <div class="nav-right">
+        <div class="notification-bell" aria-label="View notifications">
+          <i class="fa-solid fa-bell"></i>
+          <span class="bell-badge">3</span>
+        </div>
+        
+        <div class="user-profile">
+          <div class="profile-avatar">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <span id="nav-username" class="username-label">Administrator</span>
+        </div>
+        
+        <button type="button" id="logout-btn" class="logout-button btn-ripple" aria-label="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="logout-text">Logout</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Layout Container -->
+    <div class="dashboard-layout">
+      
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+          <div class="sidebar-group">
+            
+            <!-- Dashboard Trigger header -->
+            <button type="button" class="sidebar-link active" id="dashboard-menu-header" aria-expanded="true" aria-controls="dashboard-submenu">
+              <i class="fa-solid fa-house nav-icon"></i>
+              <span class="link-label">Dashboard</span>
+              <i class="fa-solid fa-chevron-down submenu-indicator"></i>
+            </button>
+            
+            <!-- Submenu Items -->
+            <div class="sidebar-submenu" id="dashboard-submenu">
+              
+              <button type="button" class="submenu-link" id="sublink-new-opp" data-section="new-opportunities">
+                <div class="submenu-bullet bg-blue"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="submenu-details">
+                  <span class="submenu-title">New Opportunities</span>
+                  <p class="submenu-desc">Opportunities received from clients that have not yet been accepted.</p>
+                </div>
+              </button>
+              
+              <button type="button" class="submenu-link" id="sublink-ongoing-opp" data-section="ongoing-opportunities">
+                <div class="submenu-bullet bg-orange"><i class="fa-solid fa-clock"></i></div>
+                <div class="submenu-details">
+                  <span class="submenu-title">On-going Opportunities</span>
+                  <p class="submenu-desc">Accepted opportunities where work has not yet started.</p>
+                </div>
+              </button>
+              
+              <button type="button" class="submenu-link" id="sublink-won-opp" data-section="won-opportunities">
+                <div class="submenu-bullet bg-green"><i class="fa-solid fa-trophy"></i></div>
+                <div class="submenu-details">
+                  <span class="submenu-title">Won</span>
+                  <p class="submenu-desc">Projects where payment has been completed but project execution has not started.</p>
+                </div>
+              </button>
+              
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content Container -->
+      <main class="main-content" id="main-content">
+        
+        <!-- A. OVERVIEW PANEL -->
+        <section id="overview-section" class="content-section active" aria-labelledby="overview-title">
+          
+          <!-- Welcome Banner Card -->
+          <div class="welcome-card glass-panel">
+            <div class="welcome-badge">SYSTEM OVERVIEW</div>
+            <h2 id="overview-title">Welcome Back!</h2>
+            <p>Manage all your client opportunities and project lifecycles from one unified workspace.</p>
+          </div>
+          
+          <!-- Summary Cards Grid -->
+          <div class="summary-cards-grid">
+            
+            <!-- Summary Card 1 (New) -->
+            <div class="summary-card glass-panel" data-target-section="new-opportunities">
+              <div class="card-glow-bg bg-blue"></div>
+              <div class="card-icon-wrapper text-blue">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+              <h3>New Opportunities</h3>
+              <p>View all newly received client opportunities that are pending review.</p>
+              <button type="button" class="card-open-btn btn-blue-lite btn-ripple">Open</button>
+            </div>
+            
+            <!-- Summary Card 2 (Ongoing) -->
+            <div class="summary-card glass-panel" data-target-section="ongoing-opportunities">
+              <div class="card-glow-bg bg-orange"></div>
+              <div class="card-icon-wrapper text-orange">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <h3>On-going Opportunities</h3>
+              <p>View accepted client contracts queued for project execution.</p>
+              <button type="button" class="card-open-btn btn-orange-lite btn-ripple">Open</button>
+            </div>
+            
+            <!-- Summary Card 3 (Won) -->
+            <div class="summary-card glass-panel" data-target-section="won-opportunities">
+              <div class="card-glow-bg bg-green"></div>
+              <div class="card-icon-wrapper text-green">
+                <i class="fa-solid fa-trophy"></i>
+              </div>
+              <h3>Won</h3>
+              <p>View projects with completed payments, awaiting execution setup.</p>
+              <button type="button" class="card-open-btn btn-green-lite btn-ripple">Open</button>
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- B. NEW OPPORTUNITIES PANEL -->
+        <section id="new-opportunities-section" class="content-section hidden" aria-labelledby="new-opp-title">
+          <div class="section-title-row">
+            <div class="title-details">
+              <h2 id="new-opp-title">New Opportunities</h2>
+              <p class="section-subtitle">Opportunities received from clients pending acceptance</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="open-add-opp-modal-btn">
+              <i class="fa-solid fa-plus"></i> Add Opportunity
+            </button>
+          </div>
+          
+          <div class="table-container glass-panel">
+            <div class="table-scroll-wrapper">
+              <table class="dashboard-table" id="new-opp-table">
+                <thead>
+                  <tr>
+                    <th>Opportunity ID</th>
+                    <th>Client Name</th>
+                    <th>Company</th>
+                    <th>Project Name</th>
+                    <th>Received Date</th>
+                    <th>Expected Budget</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled Dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div class="table-empty-state hidden" id="new-opp-empty">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>No new opportunities found. Click "+ Add Opportunity" to create one.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- C. ON-GOING OPPORTUNITIES PANEL -->
+        <section id="ongoing-opportunities-section" class="content-section hidden" aria-labelledby="ongoing-opp-title">
+          <div class="section-title-row">
+            <div class="title-details">
+              <h2 id="ongoing-opp-title">On-going Opportunities</h2>
+              <p class="section-subtitle">Accepted opportunities awaiting project execution</p>
+            </div>
+          </div>
+          
+          <div class="table-container glass-panel">
+            <div class="table-scroll-wrapper">
+              <table class="dashboard-table" id="ongoing-opp-table">
+                <thead>
+                  <tr>
+                    <th>Opportunity ID</th>
+                    <th>Client</th>
+                    <th>Project</th>
+                    <th>Accepted Date</th>
+                    <th>Assigned To</th>
+                    <th>Current Status</th>
+                    <th>Start Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled Dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div class="table-empty-state hidden" id="ongoing-opp-empty">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>No ongoing opportunities at the moment.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- D. WON PROJECTS PANEL -->
+        <section id="won-opportunities-section" class="content-section hidden" aria-labelledby="won-opp-title">
+          <div class="section-title-row">
+            <div class="title-details">
+              <h2 id="won-opp-title">Won</h2>
+              <p class="section-subtitle">Projects where payment has been fully completed</p>
+            </div>
+          </div>
+          
+          <div class="table-container glass-panel">
+            <div class="table-scroll-wrapper">
+              <table class="dashboard-table" id="won-opp-table">
+                <thead>
+                  <tr>
+                    <th>Project ID</th>
+                    <th>Client Name</th>
+                    <th>Project Name</th>
+                    <th>Payment Status</th>
+                    <th>Payment Date</th>
+                    <th>Amount</th>
+                    <th>Project Start Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled Dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div class="table-empty-state hidden" id="won-opp-empty">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>No won projects logged in the database yet.</p>
+            </div>
+          </div>
+        </section>
+        
+      </main>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       3. MODAL DIALOGS (ADD, EDIT, VIEW DETAILS)
+       ====================================================== -->
+  
+  <!-- Add / Edit Opportunity Modal -->
+  <div class="modal-overlay hidden" id="opp-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3 id="modal-title">Add Opportunity</h3>
+        <button type="button" class="modal-close-btn" id="close-modal-btn" aria-label="Close dialog">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <form id="opp-form" novalidate>
+        <!-- State management helper values -->
+        <input type="hidden" id="opp-form-id">
+        <input type="hidden" id="opp-form-mode" value="add"> <!-- add / edit -->
+        <input type="hidden" id="opp-form-category" value="new"> <!-- new / ongoing / won -->
+        
+        <div class="modal-form-grid">
+          <!-- Client Name -->
+          <div class="input-group">
+            <label for="opp-client" class="input-label">Client Name</label>
+            <input type="text" id="opp-client" class="form-input" required placeholder="e.g. Deekshitha">
+            <span class="error-message" id="opp-client-error" role="alert"></span>
+          </div>
+
+          <!-- Company -->
+          <div class="input-group">
+            <label for="opp-company" class="input-label">Company</label>
+            <input type="text" id="opp-company" class="form-input" required placeholder="e.g. Acme Corporation">
+            <span class="error-message" id="opp-company-error" role="alert"></span>
+          </div>
+
+          <!-- Project Name -->
+          <div class="input-group">
+            <label for="opp-project" class="input-label">Project Name</label>
+            <input type="text" id="opp-project" class="form-input" required placeholder="e.g. Website Redesign">
+            <span class="error-message" id="opp-project-error" role="alert"></span>
+          </div>
+
+          <!-- Budget / Amount -->
+          <div class="input-group">
+            <label for="opp-budget" class="input-label">Expected Budget / Amount ($)</label>
+            <input type="number" id="opp-budget" class="form-input" required placeholder="e.g. 25000">
+            <span class="error-message" id="opp-budget-error" role="alert"></span>
+          </div>
+
+          <!-- Priority Select (Only for NEW opportunities) -->
+          <div class="input-group" id="group-opp-priority">
+            <label for="opp-priority" class="input-label">Priority</label>
+            <select id="opp-priority" class="form-input">
+              <option value="High">High</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+          <!-- Status Input (Only for NEW opportunities) -->
+          <div class="input-group" id="group-opp-status">
+            <label for="opp-status" class="input-label">Status</label>
+            <input type="text" id="opp-status" class="form-input" placeholder="Pending" value="Pending">
+          </div>
+
+          <!-- Assigned To (Only for ONGOING opportunities) -->
+          <div class="input-group hidden" id="group-opp-assigned">
+            <label for="opp-assigned" class="input-label">Assigned To</label>
+            <input type="text" id="opp-assigned" class="form-input" placeholder="e.g. Dev Team / Sarah">
+            <span class="error-message" id="opp-assigned-error" role="alert"></span>
+          </div>
+
+          <!-- Current Status (Only for ONGOING opportunities) -->
+          <div class="input-group hidden" id="group-opp-current-status">
+            <label for="opp-current-status" class="input-label">Current Status</label>
+            <select id="opp-current-status" class="form-input">
+              <option value="Planning" selected>Planning</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Testing">Testing</option>
+            </select>
+          </div>
+
+          <!-- Payment Status Select (Only for WON projects) -->
+          <div class="input-group hidden" id="group-opp-payment-status">
+            <label for="opp-payment-status" class="input-label">Payment Status</label>
+            <select id="opp-payment-status" class="form-input">
+              <option value="Completed" selected>Completed</option>
+              <option value="Partial">Partial</option>
+            </select>
+          </div>
+
+          <!-- Project Start Status (Only for WON projects) -->
+          <div class="input-group hidden" id="group-opp-start-status">
+            <label for="opp-start-status" class="input-label">Project Start Status</label>
+            <select id="opp-start-status" class="form-input">
+              <option value="Not Started" selected>Not Started</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="In Development">In Development</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-modal-btn">
+            <span class="btn-text">Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Details Modal (Read-only) -->
+  <div class="modal-overlay hidden" id="view-modal" role="dialog" aria-modal="true" aria-labelledby="view-modal-title">
+    <div class="modal-content glass-card view-details-content">
+      <div class="modal-header">
+        <h3 id="view-modal-title">Opportunity Details</h3>
+        <button type="button" class="modal-close-btn" id="close-view-btn" aria-label="Close dialog">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      
+      <div class="modal-details-body" id="view-details-body">
+        <!-- Filled dynamically in script.js -->
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="close-view-footer-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Script -->
+  <script src="script.js"></script>
+</body>
 </html>
